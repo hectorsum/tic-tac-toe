@@ -7,10 +7,11 @@ import {
 } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
 import replace from '@rollup/plugin-replace'
+import ghPages from 'gh-pages'
 
 const production = !process.env.ROLLUP_WATCH;
-const apiUrl = production ? 'https://tictactoe.noahglaser.net' : 'http://localhost:4001';
-const wsUrl = production ? 'wss://tictactoe.noahglaser.net/ws' : 'ws://localhost:2222';
+const apiUrl = production ? 'https://hectorsum.github.io/tic-tac-toe/' : 'http://localhost:4001';
+const wsUrl = production ? 'wss://hectorsum.github.io/tic-tac-toe/ws' : 'ws://localhost:2222';
 
 function serve() {
   let server;
@@ -83,7 +84,9 @@ export default {
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify
-    production && terser()
+    production && terser() && ghPages.publish('public',(e)=>{
+      console.log('published',e)
+    })
   ],
   watch: {
     clearScreen: false

@@ -7,6 +7,7 @@ let message;
 const connect = () =>{
   try {
     if(!connection || connection.readyState >= 2){
+      console.log(process)
       connection = new WebSocket(process.env.wsUrl);
       connection.onclose = (e) => {
         console.log(e,'closed');
