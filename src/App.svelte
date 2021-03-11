@@ -1,10 +1,13 @@
 <script>
   import Space from './Space.svelte';
   import gameStore from './game-store';
+  import {nextMove, reset} from './requests'
+
   let board = ['', '', '', '', '', '', '', '', '', '', ''];
   let nextPlayer = '';
   let winner;
   let numberOfPeeps = 0;
+  let errorMessage;
   gameStore.subscribe((data) => {
     if (!data) {
       return;
@@ -14,6 +17,16 @@
     board = data.board;
     numberOfPeeps = data.numberOfPeeps;
   });
+  async function takeSpace(space){
+    console.log(space);
+    if(winner || !gameStore.isConnected){
+      return;
+    }
+    errorMessage = await nextMove(space);
+  }
+  async function newGame(){
+    errorMessage = await reset(); 
+  }
 </script>
 
 <main>
@@ -21,27 +34,31 @@
   <h2>Number of people playing: {numberOfPeeps}</h2>
   {#if winner == 'TIE'}
     <h2>Tie Game!!</h2>
-  {:else}
+  {:else if winner}
     <h2>Player {winner} won!!</h2>
+  {:else}
+  <h2>Player: {nextPlayer}</h2>
   {/if}
-  <h2>Player X</h2>
   <div class="row">
-    <Space space={board[0]} />
-    <Space space={board[1]} />
-    <Space space={board[2]} />
+    <Space {winner} space={board[0]} on:click={() => takeSpace(0)}/>
+    <Space {winner} space={board[1]} on:click={() => takeSpace(1)}/>
+    <Space {winner} space={board[2]} on:click={() => takeSpace(2)}/>
   </div>
   <div class="row">
-    <Space space={board[3]} />
-    <Space space={board[4]} />
-    <Space space={board[5]} />
+    <Space {winner} space={board[3]} on:click={() => takeSpace(3)}/>
+    <Space {winner} space={board[4]} on:click={() => takeSpace(4)}/>
+    <Space {winner} space={board[5]} on:click={() => takeSpace(5)}/>
   </div>
   <div class="row">
-    <Space space={board[6]} />
-    <Space space={board[7]} />
-    <Space space={board[8]} />
+    <Space {winner} space={board[6]} on:click={() => takeSpace(6)}/>
+    <Space {winner} space={board[7]} on:click={() => takeSpace(7)}/>
+    <Space {winner} space={board[8]} on:click={() => takeSpace(8)}/>
   </div>
   {#if winner}
-    <button> New Game </button>
+    <button on:click={newGame}> New Game </button>
+  {/if}
+  {#if errorMessage}
+  <p class="errorMessage">{errorMessage}</p>
   {/if}
 </main>
 
@@ -49,7 +66,7 @@
   main {
     width: 475px;
     margin: 0 auto;
-    border: black solid;
+    /* border: black solid; */
     height: 1000px;
   }
   .row {
@@ -67,5 +84,9 @@
   }
   button:hover {
     outline: none;
+  }
+  .errorMessage{
+    color: red;
+    font-size: 20px;
   }
 </style>

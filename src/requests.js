@@ -1,0 +1,19 @@
+export const nextMove = async(space) => {
+  try {
+    const response = await fetch(`${process.env.apiUrl}/next-turn/${space}`);
+    const message = await response.json();
+    return message.errorMessage;
+  } catch (e) {
+    console.log(e);
+    return 'Error connection to the server';
+  }
+}
+
+export const reset = async()=>{
+  try {
+    await fetch(`${process.env.apiUrl}/reset`)
+  } catch (e) {
+    console.log(e);
+    return 'Error connection to the server';
+  }
+}
