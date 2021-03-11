@@ -429,7 +429,7 @@ var app = (function () {
     const connect = () =>{
       try {
         if(!connection || connection.readyState >= 2){
-          connection = new WebSocket({"env":{"apiUrl":"https://tictactoe.noahglaser.net","wsUrl":"wss://tictactoe.noahglaser.net/ws"}}.env.wsUrl);
+          connection = new WebSocket({"env":{"apiUrl":"https://hectorsum.github.io/tic-tac-toe/","wsUrl":"wss://hectorsum.github.io/tic-tac-toe/ws"}}.env.wsUrl);
           connection.onclose = (e) => {
             console.log(e,'closed');
             connectionTimer = setInterval(() => {
@@ -473,7 +473,7 @@ var app = (function () {
 
     const nextMove = async(space) => {
       try {
-        const response = await fetch(`${{"env":{"apiUrl":"https://tictactoe.noahglaser.net","wsUrl":"wss://tictactoe.noahglaser.net/ws"}}.env.apiUrl}/next-turn/${space}`);
+        const response = await fetch(`${{"env":{"apiUrl":"https://hectorsum.github.io/tic-tac-toe/","wsUrl":"wss://hectorsum.github.io/tic-tac-toe/ws"}}.env.apiUrl}/next-turn/${space}`);
         const message = await response.json();
         return message.errorMessage;
       } catch (e) {
@@ -484,7 +484,7 @@ var app = (function () {
 
     const reset = async()=>{
       try {
-        await fetch(`${{"env":{"apiUrl":"https://tictactoe.noahglaser.net","wsUrl":"wss://tictactoe.noahglaser.net/ws"}}.env.apiUrl}/reset`);
+        await fetch(`${{"env":{"apiUrl":"https://hectorsum.github.io/tic-tac-toe/","wsUrl":"wss://hectorsum.github.io/tic-tac-toe/ws"}}.env.apiUrl}/reset`);
       } catch (e) {
         console.log(e);
         return 'Error connection to the server';
